@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>学生信息查询</title>
+    <style>
+        body { font-family: Arial; margin: 50px; }
+        input { padding: 8px; width: 200px; }
+        button { padding: 8px 12px; }
+        #result { margin-top: 20px; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <h2>学生信息查询</h2>
+    <input type="text" id="studentId" placeholder="请输入学号">
+    <button onclick="searchStudent()">查询</button>
+    <div id="result"></div>
+
+    <script>
+        let students = [];
+
+        // 加载 JSON 文件
+        async function loadData() {
+            const res = await fetch('students.json');
+            students = await res.json();
+            console.log('数据加载完成', students.length);
+        }
+
+        function showResult(msg) {
+            document.getElementById('result').innerText = msg;
+        }
+
+        function searchStudent() {
+            const id = document.getElementById('studentId').value.trim();
+            if(!id) return showResult("请输入学号");
+
+            const student = students.find(s => s.id === id);
+            if(student){
+                showResult(`姓名：${student.name}, 成绩：${student.score}`);
+            } else {
+                showResult("未找到该学号信息");
+            }
+        }
+
+        loadData();
+    </script>
+</body>
+</html>
