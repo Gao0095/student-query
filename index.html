@@ -1,57 +1,55 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>情報検索</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; padding: 0; background: #f8f8f8; }
-        h2 { text-align: center; color: #333; }
-        .container { max-width: 300px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-        input { width: 100%; padding: 12px; margin-top: 10px; margin-bottom: 10px; font-size: 16px; border-radius: 6px; border: 1px solid #ccc; }
-        button { width: 100%; padding: 12px; font-size: 16px; border: none; border-radius: 6px; background-color: #007bff; color: white; }
-        button:hover { background-color: #0056b3; }
-        #result { margin-top: 20px; font-size: 18px; color: #555; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>情報検索</title>
+<style>
+body{font-family:Arial;margin:10px;padding:0;background:#f8f8f8}
+.container{max-width:400px;margin:0 auto;background:#fff;padding:15px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.1);display:flex;flex-direction:column;gap:8px}
+h2{text-align:center;color:#333;margin-bottom:10px}
+input,button{width:100%;box-sizing:border-box;font-size:16px;padding:10px;border-radius:6px;border:1px solid #ccc}
+button{background:#007bff;color:#fff;border:none;cursor:pointer}
+button:hover{background:#0056b3}
+#result{margin-top:15px;font-size:18px;color:#555;white-space:pre-line}
+</style>
 </head>
 <body>
-
 <div class="container">
-    <h2>情報検索</h2>
-    <input type="text" id="studentId" placeholder="受験番号を入力してください">
-    <button onclick="searchStudent()">検索</button>
-    <div id="result"></div>
+<h2>情報検索</h2>
+<input type="text" id="studentId" placeholder="受験番号を入力してください">
+<button onclick="searchStudent()">検索</button>
+<div id="result"></div>
 </div>
 
 <script>
-    let students = [];
+// 这里示例用小数据，实际可以用压缩 JSON 或 IndexedDB
+// 建议把 5000 条数据做成 {id: {name,score}} 对象，提高查询速度
+let studentMap = {};
 
-    async function loadData() {
-        try {
-            const res = await fetch('students.json');
-            students = await res.json();
-            console.log('数据加载完成', students.length);
-        } catch(e) {
-            console.error('加载 JSON 失败', e);
-            document.getElementById('result').innerText = '加载数据失败，请稍后重试';
-        }
+// 按需加载 JSON
+async function loadData(){
+    try{
+        const res = await fetch('students.json'); // students.json 文件大小压缩过
+        const arr = await res.json();
+        arr.forEach(s=>studentMap[s.id]=s); // 转为 Map 对象，查询 O(1)
+        console.log('数据加载完成', arr.length);
+    }catch(e){
+        console.error('加载 JSON 失败', e);
+        document.getElementById('result').innerText='もう一度試してください';
     }
+}
 
-    function searchStudent() {
-        const id = document.getElementById('studentId').value.trim();
-        if (!id) return document.getElementById('result').innerText = '受験番号を入力してください';
+function searchStudent(){
+    const id = document.getElementById('studentId').value.trim();
+    if(!id) return document.getElementById('result').innerText='受験番号を入力してください';
+    const student = studentMap[id];
+    if(student) document.getElementById('result').innerText=`姓名：${student.name}\n成绩：${student.score}`;
+    else document.getElementById('result').innerText='該当情報ありません';
+}
 
-        // 查询数据
-        const student = students.find(s => s.id === id);
-        if(student){
-            document.getElementById('result').innerText = `姓名：${student.name}\n成绩：${student.score}`;
-        } else {
-            document.getElementById('result').innerText = '該当情報ありません';
-        }
-    }
-
-    loadData();
+// 页面加载时初始化数据
+loadData();
 </script>
-
 </body>
 </html>
