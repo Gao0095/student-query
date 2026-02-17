@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>学生信息查询</title>
+    <title>情報検索</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; padding: 0; background: #f8f8f8; }
         h2 { text-align: center; color: #333; }
-        .container { max-width: 400px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+        .container { max-width: 300px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
         input { width: 100%; padding: 12px; margin-top: 10px; margin-bottom: 10px; font-size: 16px; border-radius: 6px; border: 1px solid #ccc; }
         button { width: 100%; padding: 12px; font-size: 16px; border: none; border-radius: 6px; background-color: #007bff; color: white; }
         button:hover { background-color: #0056b3; }
@@ -17,9 +17,9 @@
 <body>
 
 <div class="container">
-    <h2>学生信息查询</h2>
-    <input type="text" id="studentId" placeholder="请输入学号">
-    <button onclick="searchStudent()">查询</button>
+    <h2>情報検索</h2>
+    <input type="text" id="studentId" placeholder="受験番号を入力してください">
+    <button onclick="searchStudent()">検索</button>
     <div id="result"></div>
 </div>
 
@@ -39,14 +39,14 @@
 
     function searchStudent() {
         const id = document.getElementById('studentId').value.trim();
-        if (!id) return document.getElementById('result').innerText = '请输入学号';
+        if (!id) return document.getElementById('result').innerText = '受験番号を入力してください';
 
         // 查询数据
         const student = students.find(s => s.id === id);
         if(student){
             document.getElementById('result').innerText = `姓名：${student.name}\n成绩：${student.score}`;
         } else {
-            document.getElementById('result').innerText = '未找到该学号信息';
+            document.getElementById('result').innerText = '該当情報ありません';
         }
     }
 
