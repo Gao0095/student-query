@@ -2,47 +2,56 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>学生信息查询</title>
     <style>
-        body { font-family: Arial; margin: 50px; }
-        input { padding: 8px; width: 200px; }
-        button { padding: 8px 12px; }
-        #result { margin-top: 20px; font-size: 18px; }
+        body { font-family: Arial, sans-serif; margin: 20px; padding: 0; background: #f8f8f8; }
+        h2 { text-align: center; color: #333; }
+        .container { max-width: 400px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+        input { width: 100%; padding: 12px; margin-top: 10px; margin-bottom: 10px; font-size: 16px; border-radius: 6px; border: 1px solid #ccc; }
+        button { width: 100%; padding: 12px; font-size: 16px; border: none; border-radius: 6px; background-color: #007bff; color: white; }
+        button:hover { background-color: #0056b3; }
+        #result { margin-top: 20px; font-size: 18px; color: #555; }
     </style>
 </head>
 <body>
+
+<div class="container">
     <h2>学生信息查询</h2>
     <input type="text" id="studentId" placeholder="请输入学号">
     <button onclick="searchStudent()">查询</button>
     <div id="result"></div>
+</div>
 
-    <script>
-        let students = [];
+<script>
+    let students = [];
 
-        // 加载 JSON 文件
-        async function loadData() {
+    async function loadData() {
+        try {
             const res = await fetch('students.json');
             students = await res.json();
             console.log('数据加载完成', students.length);
+        } catch(e) {
+            console.error('加载 JSON 失败', e);
+            document.getElementById('result').innerText = '加载数据失败，请稍后重试';
         }
+    }
 
-        function showResult(msg) {
-            document.getElementById('result').innerText = msg;
+    function searchStudent() {
+        const id = document.getElementById('studentId').value.trim();
+        if (!id) return document.getElementById('result').innerText = '请输入学号';
+
+        // 查询数据
+        const student = students.find(s => s.id === id);
+        if(student){
+            document.getElementById('result').innerText = `姓名：${student.name}\n成绩：${student.score}`;
+        } else {
+            document.getElementById('result').innerText = '未找到该学号信息';
         }
+    }
 
-        function searchStudent() {
-            const id = document.getElementById('studentId').value.trim();
-            if(!id) return showResult("请输入学号");
+    loadData();
+</script>
 
-            const student = students.find(s => s.id === id);
-            if(student){
-                showResult(`姓名：${student.name}, 成绩：${student.score}`);
-            } else {
-                showResult("未找到该学号信息");
-            }
-        }
-
-        loadData();
-    </script>
 </body>
 </html>
