@@ -44,7 +44,7 @@ function searchStudent(){
     const id = document.getElementById('studentId').value.trim();
     if(!id) return document.getElementById('result').innerText='受験番号を入力してください';
     const student = studentMap[id];
-    if(student) document.getElementById('result').innerText=`名前：${student.name}\n性別：${student.gender}\n国籍：${student.nation}\n教室：${student.Room}`;
+    if(student) document.getElementById('result').innerText=`名前：${student.name}\n性別：${student.gender}\n国籍：${student.nation}\n教室：${student.room}`;
     else document.getElementById('result').innerText='該当情報ありません';
 }
 
