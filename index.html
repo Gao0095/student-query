@@ -17,7 +17,7 @@ button:hover{background:#0056b3}
 <body>
 <div class="container">
 <h2>情報検索</h2>
-<input type="text" id="studentId" placeholder="受験番号を入力してください">
+<input type="text" id="test_id" placeholder="受験番号を入力してください">
 <button onclick="searchStudent()">検索</button>
 <div id="result"></div>
 </div>
@@ -41,10 +41,10 @@ async function loadData(){
 }
 
 function searchStudent(){
-    const id = document.getElementById('studentId').value.trim();
+    const id = document.getElementById('Test_id').value.trim();
     if(!id) return document.getElementById('result').innerText='受験番号を入力してください';
     const student = studentMap[id];
-    if(student) document.getElementById('result').innerText=`名前：${student.name}\n性別：${student.gender}\n国籍：${student.nation}\n教室：${student.room}`;
+    if(student) document.getElementById('result').innerText=`名前：${student.name}\n受験番号：${student.test_id}\n国籍：${student.nationality}\nオリエン教室：${student.orientation_room}`;
     else document.getElementById('result').innerText='該当情報ありません';
 }
 
