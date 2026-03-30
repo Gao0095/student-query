@@ -16,7 +16,7 @@ button:hover{background:#0056b3}
 </head>
 <body>
 <div class="container">
-<h2>受験番号</h2>
+<h2>受験番号or学籍番号<br>准考证号或学号</h2>
 <input type="text" id="test_id" placeholder="Please enter your examination number or student ID.">
 <button onclick="searchStudent()">検索 / Search</button>
 <div id="result"></div>
@@ -65,7 +65,7 @@ Student ID：${student.studentid}
 Nationality：${student.nationality}
 Orientation Classroom：${student.orientation_room}`;
     }else{
-        document.getElementById('result').innerText='該当情報ありません';
+        document.getElementById('result').innerText=' No results found. ';
     }
 }
 
