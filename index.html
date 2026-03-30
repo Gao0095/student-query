@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>受 験 番 号</title>
+<title> This is title </title>
 <style>
 body{font-family:Arial;margin:10px;padding:0;background:#f8f8f8}
 .container{max-width:400px;margin:0 auto;background:#fff;padding:15px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.1);display:flex;flex-direction:column;gap:8px}
@@ -17,22 +17,27 @@ button:hover{background:#0056b3}
 <body>
 <div class="container">
 <h2>受験番号</h2>
-<input type="text" id="test_id" placeholder="Please enter your examination number.">
-<button onclick="searchStudent()">検索/Search</button>
+<input type="text" id="test_id" placeholder="Please enter your examination number or student ID.">
+<button onclick="searchStudent()">検索 / Search</button>
 <div id="result"></div>
 </div>
 
 <script>
-// 这里示例用小数据，实际可以用压缩 JSON 或 IndexedDB
-// 建议把 5000 条数据做成 {id: {name,score}} 对象，提高查询速度
+// 两个索引：id + studentid
 let studentMap = {};
+let studentIdMap = {};
 
-// 按需加载 JSON
+// 加载数据
 async function loadData(){
     try{
-        const res = await fetch('students.json'); // students.json 文件大小压缩过
+        const res = await fetch('students.json');
         const arr = await res.json();
-        arr.forEach(s=>studentMap[s.id]=s); // 转为 Map 对象，查询 O(1)
+
+        arr.forEach(s => {
+            studentMap[s.id] = s;              // id 索引
+            studentIdMap[s.studentid] = s;     // studentid 索引
+        });
+
         console.log('数据加载完成', arr.length);
     }catch(e){
         console.error('加载 JSON 失败', e);
@@ -40,15 +45,31 @@ async function loadData(){
     }
 }
 
+// 查询函数
 function searchStudent(){
-    const id = document.getElementById('test_id').value.trim();
-    if(!id) return document.getElementById('result').innerText='Please enter your examination number. ';
-    const student = studentMap[id];
-    if(student) document.getElementById('result').innerText=`Examination Number：${student.id}\nName：${student.name}\nStudent ID：${student.studentid}\nNationality：${student.nationality}\nOrientation Classroom：${student.orientation_room}`;
-    else document.getElementById('result').innerText='該当情報ありません';
+    const input = document.getElementById('test_id').value.trim();
+
+    if(!input){
+        document.getElementById('result').innerText='Please enter your examination number.';
+        return;
+    }
+
+    // 同时支持 id 或 studentid
+    const student = studentMap[input] || studentIdMap[input];
+
+    if(student){
+        document.getElementById('result').innerText =
+`Examination Number：${student.id}
+Name：${student.name}
+Student ID：${student.studentid}
+Nationality：${student.nationality}
+Orientation Classroom：${student.orientation_room}`;
+    }else{
+        document.getElementById('result').innerText='該当情報ありません';
+    }
 }
 
-// 页面加载时初始化数据
+// 页面加载时执行
 loadData();
 </script>
 </body>
