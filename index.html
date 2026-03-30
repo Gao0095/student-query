@@ -16,17 +16,18 @@ button:hover{background:#0056b3}
 </head>
 <body>
 <div class="container">
-<h2>
-  受験番号 / 学籍番号<br>
-  <span style="font-size:14px;color:#666;">
-    <span style="color:#555;">
-      Examination No. or Student ID
-    </span><br>
-    <span style="color:#888;">
-      准考证号 或 学号
-    </span>
-  </span>
+<h2 class="title">
+  <span class="jp">受験番号 / 学籍番号</span>
+  <span class="en">Examination No. or Student ID</span>
+  <span class="cn">准考证号 或 学号</span>
 </h2>
+
+<div class="lang-switch">
+  <button onclick="setLang('all')">ALL</button>
+  <button onclick="setLang('jp')">日本語</button>
+  <button onclick="setLang('en')">EN</button>
+  <button onclick="setLang('cn')">中文</button>
+</div>
 <input type="text" id="test_id" placeholder="Please enter your examination number or student ID.">
 <button onclick="searchStudent()">検索 / Search</button>
 <div id="result"></div>
