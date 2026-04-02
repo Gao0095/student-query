@@ -27,7 +27,7 @@ button:hover{background:#0056b3}
     准考证号 或 学号
   </span>
 </h2>
-<input type="text" id="test_id" placeholder="Please enter your examination number or student ID.">
+<input type="text" id="test_id" placeholder="Please enter your application number or student ID.">
 <button onclick="searchStudent()">検索 / Search</button>
 <div id="result"></div>
 </div>
@@ -69,9 +69,9 @@ function searchStudent(){
 
     if(student){
         document.getElementById('result').innerText =
-`Examination Number：${student.id}
+`Application Number：${student.id}
 Student ID：${student.studentid}
-Orientation Classroom：${student.orientation_room}`;
+Orientation room：${student.orientation_room}`;
     }else{
         document.getElementById('result').innerText=' No results found. ';
     }
