@@ -70,9 +70,7 @@ function searchStudent(){
     if(student){
         document.getElementById('result').innerText =
 `Examination Number：${student.id}
-Name：${student.name}
 Student ID：${student.studentid}
-Nationality：${student.nationality}
 Orientation Classroom：${student.orientation_room}`;
     }else{
         document.getElementById('result').innerText=' No results found. ';
